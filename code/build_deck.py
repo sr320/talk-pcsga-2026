@@ -252,6 +252,35 @@ picture(s, "family_ranking.png", 2.4, 1.75, 8.5, 4.3)
 callout(s, "Family 5 is the toughest; family 7 the most fragile — and the spread repeats across trials.")
 notes(s, "This is the truth we want to predict.")
 
+# ---------------------------------------------------------------- 11 READING THE SCORE
+s = slide(); title(s, "Reading the score: what the numbers mean",
+                   "Both numbers ask the same thing, on a scale of -1 to +1")
+tf = textbox(s, 0.85, 2.3, 11.6, 0.6)
+p = tf.paragraphs[0]
+p.text = "Does the test rank the families in their true survival order?"
+p.font.size = Pt(23); p.font.bold = True; p.font.color.rgb = NAVY
+
+tf = textbox(s, 0.85, 3.05, 11.6, 2.9)
+rows = [
+    ("Spearman rho", "A ranking agreement score. +1 = same order (the test's toughest really is the toughest), 0 = unrelated, -1 = reversed. We rank rather than use raw values so one odd family can't distort it."),
+    ("LOFO-CV rho", "The same score, measured honestly on families the model never saw: hide one family, predict it from the other eight, repeat for all nine, then compare."),
+]
+first = True
+for label, body in rows:
+    p = tf.paragraphs[0] if first else tf.add_paragraph()
+    first = False
+    p.text = label
+    p.font.size = Pt(21); p.font.bold = True; p.font.color.rgb = TEAL
+    p.space_before = Pt(0 if first else 14)
+    p2 = tf.add_paragraph()
+    p2.text = body
+    p2.font.size = Pt(18); p2.font.color.rgb = GRAY
+    p2.space_after = Pt(18); p2.space_before = Pt(4)
+
+callout(s, "Spearman rho = optimistic best case.  LOFO-CV rho = the trustworthy one.")
+notes(s, "A small gap between the two means the prediction isn't just memorizing our nine families. "
+         "Spend ~45 s here — every rho on the next three slides depends on it.")
+
 # ---------------------------------------------------------------- 11 BEST PREDICTOR
 s = slide(); title(s, "Tough families crash later", "Single best metabolic predictor")
 place(s, "best_single_predictor_scatter.png", 1.63, 2.25, 4.30)
@@ -279,6 +308,13 @@ bullets(s, [
     "The signal is strongest when the assay is run during stress, not at rest.",
 ], top=2.5, size=24, gap=24)
 notes(s, "Metabolic depression as a resilience strategy — consistent with the PeerJ survival result.")
+
+# ---------------------------------------------------------------- 13 CURVE FEATURES
+s = slide(); title(s, "Four values read from one curve",
+                   "Everything in the index comes from the shape of a single oyster's run")
+picture(s, "index_feature_schematic.png", 1.6, 2.0, 10.1, 4.0)
+notes(s, "Walk the curve once: climbs, peaks, then drops. Early rise, steadiness, "
+         "time to steepest drop, depth of collapse. Then the next slide says which direction is good.")
 
 # ---------------------------------------------------------------- 13 INDEX
 s = slide(); title(s, "The resazurin index", "Four curve features, blended into one score per family")
